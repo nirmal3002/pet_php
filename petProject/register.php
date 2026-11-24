@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     try {
         $conn = get_connection();
-        // Check whether email already exists
         $sql = "SELECT id FROM users WHERE email = ?";
         $ps = $conn->prepare($sql);
         $ps->bind_param("s", $email);
@@ -19,8 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $msg = "Email already registered!";
             $error = true;
         } else {
-            // Encrypt password before storing
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $hashed_password = $password;
             $sql = "INSERT INTO users(name, mobile, email, password)
                     VALUES(?,?,?,?)";
             $ps = $conn->prepare($sql);
